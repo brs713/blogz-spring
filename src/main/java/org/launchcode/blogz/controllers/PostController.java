@@ -3,6 +3,7 @@ package org.launchcode.blogz.controllers;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.launchcode.blogz.models.Post;
 import org.launchcode.blogz.models.User;
@@ -33,28 +34,37 @@ public class PostController extends AbstractController {
 			return "newpost";
 		}
 
-//		User author = getUserFromSession(request);
-//		Post post = new Post(title, body);
-//		
-//		postDao.save()
+		HttpSession thisSession = request.getSession();
+		User author = getUserFromSession(thisSession);
+		Post post = new Post(title, body, author);
+		
+		postDao.save(post);
 		
 		
-		return "redirect:index"; // TODO - this redirect should go to the new post's page  		
+		return "redirect:/blog/" + author.getUsername() + "/" + post.getUid();
+		// TODO - this redirect should go to the new post's page  		
 	}
 	
 	@RequestMapping(value = "/blog/{username}/{uid}", method = RequestMethod.GET)
 	public String singlePost(@PathVariable String username, @PathVariable int uid, Model model) {
 		
-		// TODO - implement singlePost
+		Post post = postDao.findByUid(uid);
 		
+		model.addAttribute("post", post);
+
 		return "post";
 	}
 	
 	@RequestMapping(value = "/blog/{username}", method = RequestMethod.GET)
 	public String userPosts(@PathVariable String username, Model model) {
 		
-		// TODO - implement userPosts
+		User user = userDao.findByUsername(username);
 		
+		List<Post> posts = postDao.findByAuthor(user);
+
+		model.addAttribute("isUserPage", true);
+		model.addAttribute("posts", posts);
+
 		return "blog";
 	}
 	

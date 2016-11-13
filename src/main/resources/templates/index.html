@@ -11,7 +11,7 @@
 	<ul th:each="user : ${users}">
 
 		<li class="users"><a class="user-list"
-			href="/blog/${user.username}" th:href="@{blog/${user.username}}" th:text="${user.username}"></a></li>
+			th:href="'blog/' + ${user.username}" th:text="${user.username}"></a></li>
 	</ul>
 
 </body>
