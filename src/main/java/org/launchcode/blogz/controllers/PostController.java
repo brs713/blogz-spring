@@ -23,7 +23,21 @@ public class PostController extends AbstractController {
 	@RequestMapping(value = "/blog/newpost", method = RequestMethod.POST)
 	public String newPost(HttpServletRequest request, Model model) {
 		
-		// TODO - implement newPost
+		String title = request.getParameter("title");
+		String body = request.getParameter("body");
+		
+		if (title == "" || body == "") {
+			model.addAttribute("title", title);
+			model.addAttribute("body", body);
+			model.addAttribute("error", "Please enter both a title and a body.");
+			return "newpost";
+		}
+
+//		User author = getUserFromSession(request);
+//		Post post = new Post(title, body);
+//		
+//		postDao.save()
+		
 		
 		return "redirect:index"; // TODO - this redirect should go to the new post's page  		
 	}

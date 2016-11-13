@@ -6,7 +6,19 @@
 
 	<div th:replace="template :: navigation"></div>
 
-	<!-- TODO - display a single blog post -->
+	<section th:fragment="post">
+
+		<h3 class="post-title" th:text="${post.title}"></h3>
+		<p class="post-body" th:text="#{post.body}"></p>
+		<p class="post-author">
+			written on <span
+				th:text="${#calendars.format(${post.created},'dd MMMM yyyy')}"></span>
+			by <a href="/blog/${post.author.username}"
+				th:href=@{/blog/${post.author.username}}
+				th:text="${post.author.username}"></a>
+		</p>
+
+	</section>
 
 </body>
 </html>
